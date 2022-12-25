@@ -1,4 +1,3 @@
-import { Game } from "../../chess/types";
 import Piece from "../../chess/types/piece";
 import canvasExtend from "./prototype";
 
@@ -21,7 +20,7 @@ declare global {
       row: number,
       column: number
     ) => { _rows: number[]; _columns: number[] };
-    drawChessPiece: (game: Game, piece: Piece) => void;
+    drawChessPiece: (piece: Piece, clicked: boolean) => void;
   }
 }
 

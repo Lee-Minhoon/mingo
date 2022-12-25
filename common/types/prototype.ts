@@ -1,5 +1,4 @@
 import { CHESS_LINES } from "../../chess/constants";
-import { Game } from "../../chess/types";
 import Piece from "../../chess/types/piece";
 
 // eslint-disable-next-line import/no-anonymous-default-export
@@ -35,14 +34,14 @@ export default function () {
   };
 
   CanvasRenderingContext2D.prototype.drawChessPiece = function (
-    game: Game,
-    piece: Piece
+    piece: Piece,
+    clicked: boolean
   ) {
     const color = piece.color;
     const position = piece.position;
     const canvas = this.canvas;
     this.lineWidth = 2;
-    this.strokeStyle = game.clicked === piece ? "blue" : color;
+    this.strokeStyle = clicked ? "black" : color;
     const length = Math.min(canvas.width, canvas.height) / CHESS_LINES;
     const y = position.y * length - length / 2;
     const x = position.x * length - length / 2;

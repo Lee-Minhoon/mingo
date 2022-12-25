@@ -2,15 +2,22 @@ import Position from "./position";
 
 abstract class Piece {
   constructor(
+    private _id: string,
+    private _src: string,
     private _color: string | CanvasGradient | CanvasPattern,
     private _position: Position
   ) {
+    this._id = _id;
     this._color = _color;
     this._position = _position;
   }
 
-  set color(color: string | CanvasGradient | CanvasPattern) {
-    this._color = color;
+  get id() {
+    return this._id;
+  }
+
+  get src() {
+    return this._src;
   }
 
   get color() {

@@ -1,43 +1,56 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { CHESS_LINES } from "../../../chess/constants";
-import { Game } from "../../../chess/types";
+import { CHESS_LINES, INIT_PIECES } from "../../../chess/constants";
+import Piece from "../../../chess/types/piece";
 import Canvas from "../../../common/components/Canvas";
 
 const Chess = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [re, setRe] = useState(false);
-  const [game, setGame] = useState<Game>(new Game());
   const [context, setContext] = useState<CanvasRenderingContext2D>();
+  const [pieces, setPieces] = useState<Piece[]>(INIT_PIECES);
+  const [clicked, setClicked] = useState<Piece>();
 
-  const pieceClick = useCallback(
-    (e: MouseEvent) => {
-      game.clickPiece(e);
-      setRe(true);
+  const handleClick = useCallback(
+    (e: React.MouseEvent<HTMLCanvasElement, MouseEvent>) => {
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+      const width = canvas.width;
+      const height = canvas.height;
+      const length = Math.min(width, height) / CHESS_LINES;
+
+      const clickedX = e.pageX - canvas.scrollLeft;
+      const clickedY = e.pageY - canvas.scrollTop;
+
+      const x = Math.ceil(clickedX / length);
+      const y = Math.ceil(clickedY / length);
+
+      const piece = pieces.find(
+        (item) => item.position.y === y && item.position.x === x
+      );
+
+      setClicked(piece);
     },
-    [game]
+    [pieces]
   );
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    Game.setCanvas(canvas);
-    canvas.addEventListener("mousedown", pieceClick);
     const context = canvas.getContext("2d");
     if (!context) return;
     context.drawGrid(CHESS_LINES, CHESS_LINES);
     setContext(context);
-    return () => canvas.removeEventListener("mousedown", pieceClick);
-  }, [pieceClick]);
+  }, []);
 
   useEffect(() => {
     if (!context) return;
-    game.pieces.forEach((item) => {
-      context.drawChessPiece(game, item);
+    pieces.forEach((item) => {
+      context.drawChessPiece(item, item.id === clicked?.id);
     });
-    setRe(false);
-  }, [re, game, context, game.pieces]);
+  }, [context, pieces, clicked]);
 
-  return <Canvas ref={canvasRef} width={500} height={500} />;
+  return (
+    <Canvas ref={canvasRef} onClick={handleClick} width={500} height={500} />
+  );
 };
 
 export default Chess;
