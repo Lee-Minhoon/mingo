@@ -1,5 +1,6 @@
 import { CHESS_LINES } from "../../chess/constants";
 import Piece from "../../chess/types/piece";
+import { CHECKER_BOARD_LINES } from "../constants";
 import { getSquareLength } from "../utilities";
 
 // eslint-disable-next-line import/no-anonymous-default-export
@@ -26,16 +27,37 @@ export default function () {
   /**
    * Draw a grid
    */
-  CanvasRenderingContext2D.prototype.drawGrid = function (row, column) {
+  CanvasRenderingContext2D.prototype.drawGrid = function (
+    width,
+    height,
+    lines
+  ) {
     const canvas = this.canvas;
+    const length = getSquareLength(canvas, lines);
     this.lineWidth = 1;
     this.strokeStyle = "black";
-    for (let y = 0; y <= canvas.height; y += canvas.height / row) {
-      this.drawLine({ begin: { x: 0, y }, end: { x: canvas.width, y } });
+    for (let row = 0; row < lines; row++) {
+      const y = this.drawLine({
+        begin: { x: 0, y: row * length },
+        end: { x: canvas.width, y: row * length },
+      });
     }
-    for (let x = 0; x <= canvas.width; x += canvas.width / column) {
-      this.drawLine({ begin: { x, y: 0 }, end: { x, y: canvas.height } });
+    for (let column = 0; column < lines; column++) {
+      this.drawLine({
+        begin: { x: column * length, y: 0 },
+        end: { x: column * length, y: canvas.height },
+      });
     }
+  };
+
+  /**
+   * Draw a checker board.
+   */
+  CanvasRenderingContext2D.prototype.drawCheckerBoard = function () {
+    const canvas = this.canvas;
+    this.fillStyle = "#eba823";
+    // this.fillRect(0, 0, canvas.width, canvas.height);
+    // this.drawGrid(CHECKER_BOARD_LINES);
   };
 
   /**
@@ -55,6 +77,8 @@ export default function () {
       }
     }
   };
+
+  CanvasRenderingContext2D;
 
   /**
    * Draw a chess piece.

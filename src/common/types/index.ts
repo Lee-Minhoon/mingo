@@ -1,4 +1,3 @@
-import { Position } from "../../chess/types";
 import Piece from "../../chess/types/piece";
 import canvasExtend from "./canvas";
 
@@ -6,8 +5,9 @@ declare global {
   interface CanvasRenderingContext2D {
     drawLine: ({ begin, end }: DrawLineParams) => void;
     drawCircle: (y: number, x: number, radius: number) => void;
-    drawGrid: (row: number, column: number) => void;
-    drawChessBoard: (nextPositions: Position[]) => void;
+    drawGrid: (width: number, height: number, lines: number) => void;
+    drawCheckerBoard: () => void;
+    drawChessBoard: () => void;
     drawChessPiece: (piece: Piece, clicked: boolean) => void;
   }
 }
