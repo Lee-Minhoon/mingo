@@ -11,5 +11,11 @@ export default function App({ Component, pageProps }: AppProps) {
     setLoading(true);
   }, []);
 
-  return loading && <Component {...pageProps} />;
+  return (
+    loading && (
+      <div style={{ padding: "500px 30px" }}>
+        <Component {...pageProps} />
+      </div>
+    )
+  );
 }
