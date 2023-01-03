@@ -2,10 +2,15 @@
  * Get the length of one square on the board
  * @param canvas Canvas
  * @param lines Number of lines on the board
+ * @param padding Padding value of the canvas
  * @returns Length of one sqaure
  */
-export const getSquareLength = (canvas: HTMLCanvasElement, lines: number) => {
-  return Math.min(canvas.width, canvas.height) / lines;
+export const getSquareLength = (
+  canvas: HTMLCanvasElement,
+  lines: number,
+  padding = 0
+) => {
+  return Math.min(canvas.length - padding) / (lines - 1);
 };
 
 /**
@@ -13,17 +18,19 @@ export const getSquareLength = (canvas: HTMLCanvasElement, lines: number) => {
  * @param e Mouse event
  * @param canvas Canvas
  * @param lines Number of lines on the board
+ * @param padding Padding value of the canvas
  * @returns Coordinates of the board
  */
 export const getBoardCoord = (
   e: React.MouseEvent<HTMLCanvasElement, MouseEvent>,
   canvas: HTMLCanvasElement,
-  lines: number
+  lines: number,
+  padding = 0
 ): { x: number; y: number } => {
-  const length = getSquareLength(canvas, lines);
+  const length = getSquareLength(canvas, lines, padding);
 
-  const clickedX = e.pageX - canvas.offsetLeft;
-  const clickedY = e.pageY - canvas.offsetTop;
+  const clickedX = e.pageX - canvas.offsetLeft + padding / 2;
+  const clickedY = e.pageY - canvas.offsetTop + padding / 2;
 
   const x = Math.floor(clickedX / length);
   const y = Math.floor(clickedY / length);

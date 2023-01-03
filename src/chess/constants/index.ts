@@ -1,7 +1,7 @@
 import { King, Queen, Bishop, Knight, Rook, Pawn } from "../types";
 import Position from "../types/position";
 
-export const CHESS_LINES = 8;
+export const CHESS_SQUARES = 8;
 
 export const INIT_PIECES = [
   new King(true, "B-KING-1", "&#9818", new Position(4, 7)),

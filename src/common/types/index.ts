@@ -2,11 +2,15 @@ import Piece from "../../chess/types/piece";
 import canvasExtend from "./canvas";
 
 declare global {
+  interface HTMLCanvasElement {
+    length: number;
+  }
   interface CanvasRenderingContext2D {
     drawLine: ({ begin, end }: DrawLineParams) => void;
-    drawCircle: (y: number, x: number, radius: number) => void;
-    drawGrid: (width: number, height: number, lines: number) => void;
+    drawCircle: (x: number, y: number, radius: number, fill?: boolean) => void;
+    drawGrid: (lines: number, padding?: number) => void;
     drawCheckerBoard: () => void;
+    drawGoStone: (x: number, y: number) => void;
     drawChessBoard: () => void;
     drawChessPiece: (piece: Piece, clicked: boolean) => void;
   }

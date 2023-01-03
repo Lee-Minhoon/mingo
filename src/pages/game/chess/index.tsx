@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { CHESS_LINES, INIT_PIECES } from "../../../chess/constants";
+import { CHESS_SQUARES, INIT_PIECES } from "../../../chess/constants";
 import { Position } from "../../../chess/types";
 import Piece from "../../../chess/types/piece";
 import Canvas from "../../../common/components/Canvas";
@@ -13,12 +13,12 @@ const Chess = () => {
   const [nextPositions, setNextPositions] = useState<Position[]>([]);
   const [turn, setTurn] = useState(true);
 
-  // Piece click handler
+  // Click handler
   const handleClick = useCallback(
     (e: React.MouseEvent<HTMLCanvasElement, MouseEvent>) => {
       const canvas = canvasRef.current;
       if (!canvas) return;
-      const { x, y } = getBoardCoord(e, canvas, CHESS_LINES);
+      const { x, y } = getBoardCoord(e, canvas, CHESS_SQUARES + 1);
       const position = new Position(x, y);
 
       const findPiece = pieces.find(
@@ -57,22 +57,22 @@ const Chess = () => {
     if (!canvas) return;
     const context = canvas.getContext("2d");
     if (!context) return;
-    context?.drawChessBoard([]);
+    context.drawChessBoard();
     setContext(context);
   }, []);
 
   // Draw the board and pieces on the canvas.
   useEffect(() => {
     if (!context) return;
-    context?.drawChessBoard([]);
+    context.drawChessBoard();
     pieces.forEach((item) => {
       context.drawChessPiece(item, item.id === selected?.id);
     });
     if (selected) {
       const nextPositions = [];
-      const length = getSquareLength(context.canvas, CHESS_LINES);
-      for (let row = 0; row < CHESS_LINES; row++) {
-        for (let column = 0; column < CHESS_LINES; column++) {
+      const length = getSquareLength(context.canvas, CHESS_SQUARES + 1);
+      for (let row = 0; row < CHESS_SQUARES; row++) {
+        for (let column = 0; column < CHESS_SQUARES; column++) {
           const nextPosition = new Position(column, row);
           const findPiece = pieces.find((item) =>
             item.position.eqaul(nextPosition)
